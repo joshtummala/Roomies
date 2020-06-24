@@ -1,5 +1,6 @@
 package com.roomies.backend.data;
 
+import java.util.List;
 import java.util.Objects;
 
 public class Location {
@@ -8,10 +9,35 @@ public class Location {
   private String state;
   private String country;
 
+  public Location() {}
+
   public Location(String city, String state, String country) {
     this.city = city;
     this.state = state;
     this.country = country;
+  }
+
+  public void setCity(String city) {
+    this.city = city;
+  }
+
+  public void setState(String state) {
+    this.state = state;
+  }
+
+  public void setCountry(String country) {
+    this.country = country;
+  }
+
+  /** Expects a String with structure "<CITY>:<STATE>:<COUNTRY>"*/
+  public Location(String location) {
+    String[] split = location.split(":");
+    if(split.length != 3) {
+      throw new IllegalArgumentException("Did not provide the correct location structure");
+    }
+    this.city = split[0];
+    this.state = split[1];
+    this.country = split[2];
   }
 
   @Override
