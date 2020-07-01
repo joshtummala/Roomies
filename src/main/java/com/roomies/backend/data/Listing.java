@@ -13,8 +13,6 @@ public class Listing {
     private Group group;
     private boolean isListed;
     private Set<String> accessIDs;
-    private ProfessionalUser landlord;
-    private ProfessionalUser agent;
     private String clusterID;
     private Description description;
 
@@ -50,22 +48,6 @@ public class Listing {
         isListed = listed;
     }
 
-    public ProfessionalUser getLandlord() {
-        return landlord;
-    }
-
-    public void setLandlord(ProfessionalUser landlord) {
-        this.landlord = landlord;
-    }
-
-    public ProfessionalUser getAgent() {
-        return agent;
-    }
-
-    public void setAgent(ProfessionalUser agent) {
-        this.agent = agent;
-    }
-
     public String getClusterID() {
         return clusterID;
     }
@@ -90,14 +72,11 @@ public class Listing {
         this.accessIDs = accessIDs;
     }
 
-    public Listing(String name, Group group, boolean isListed, Set<String> accessIDs, ProfessionalUser landlord,
-                   ProfessionalUser agent, String clusterID, Description description) {
+    public Listing(String name, Group group, boolean isListed, Set<String> accessIDs, String clusterID, Description description) {
         this.name = name;
         this.group = group;
         this.isListed = isListed;
         this.accessIDs = accessIDs;
-        this.landlord = landlord;
-        this.agent = agent;
         this.clusterID = clusterID;
         this.description = description;
     }
