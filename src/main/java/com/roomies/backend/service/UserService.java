@@ -22,6 +22,18 @@ public class UserService {
     return userRepository.findById(id).orElseThrow(RuntimeException::new);
   }
 
+  public User findByUsername(String username) {
+    return userRepository.findByUsername(username).orElseThrow(RuntimeException::new);
+  }
+
+  public Boolean existsByUsername(String username) {
+    return userRepository.existsByUsername(username);
+  }
+
+  public Boolean existsByEmail(String email) {
+    return userRepository.existsByEmail(email);
+  }
+
   public User save(User user) {
     return userRepository.save(user);
   }

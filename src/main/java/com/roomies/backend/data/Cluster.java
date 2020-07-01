@@ -10,6 +10,5 @@ public class Cluster {
     private String Id;
 
     private Set<Listing> listings;
-    private ProfessionalUser head;
     private String name;
 }

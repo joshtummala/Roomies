@@ -9,8 +9,6 @@ public class Listing {
 
     private String name;
     private Group group;
-    private ProfessionalUser landlord;
-    private ProfessionalUser agent;
     private Cluster building;
     private Description description;
 
@@ -38,22 +36,6 @@ public class Listing {
         this.group = group;
     }
 
-    public ProfessionalUser getLandlord() {
-        return landlord;
-    }
-
-    public void setLandlord(ProfessionalUser landlord) {
-        this.landlord = landlord;
-    }
-
-    public ProfessionalUser getAgent() {
-        return agent;
-    }
-
-    public void setAgent(ProfessionalUser agent) {
-        this.agent = agent;
-    }
-
     public Cluster getBuilding() {
         return building;
     }
@@ -70,13 +52,4 @@ public class Listing {
         this.description = description;
     }
 
-    public Listing(String name, Group group, ProfessionalUser landlord,
-                   ProfessionalUser agent, Cluster building, Description description) {
-        this.name = name;
-        this.group = group;
-        this.landlord = landlord;
-        this.agent = agent;
-        this.building = building;
-        this.description = description;
-    }
 }
