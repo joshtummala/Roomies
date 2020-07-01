@@ -31,4 +31,13 @@ public class ClusterService {
         clusterRepository.deleteById(id);
     }
 
+    public boolean contains(String id)  {
+        try {
+            this.findById(id);
+        } catch(Exception e) {
+            return false;
+        }
+        return true;
+    }
+
 }

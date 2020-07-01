@@ -2,6 +2,8 @@ package com.roomies.backend.data;
 
 import org.springframework.data.annotation.Id;
 
+import java.util.Set;
+
 public class Listing {
 
     @Id
@@ -9,9 +11,11 @@ public class Listing {
 
     private String name;
     private Group group;
+    private boolean isListed;
+    private Set<String> accessIDs;
     private ProfessionalUser landlord;
     private ProfessionalUser agent;
-    private Cluster building;
+    private String clusterID;
     private Description description;
 
     public String getId() {
@@ -38,6 +42,14 @@ public class Listing {
         this.group = group;
     }
 
+    public boolean isListed() {
+        return isListed;
+    }
+
+    public void setListed(boolean listed) {
+        isListed = listed;
+    }
+
     public ProfessionalUser getLandlord() {
         return landlord;
     }
@@ -54,12 +66,12 @@ public class Listing {
         this.agent = agent;
     }
 
-    public Cluster getBuilding() {
-        return building;
+    public String getClusterID() {
+        return clusterID;
     }
 
-    public void setBuilding(Cluster building) {
-        this.building = building;
+    public void setClusterID(String clusterID) {
+        this.clusterID = clusterID;
     }
 
     public Description getDescription() {
@@ -70,13 +82,23 @@ public class Listing {
         this.description = description;
     }
 
-    public Listing(String name, Group group, ProfessionalUser landlord,
-                   ProfessionalUser agent, Cluster building, Description description) {
+    public Set<String> getAccessIDs() {
+        return accessIDs;
+    }
+
+    public void setAccessIDs(Set<String> accessIDs) {
+        this.accessIDs = accessIDs;
+    }
+
+    public Listing(String name, Group group, boolean isListed, Set<String> accessIDs, ProfessionalUser landlord,
+                   ProfessionalUser agent, String clusterID, Description description) {
         this.name = name;
         this.group = group;
+        this.isListed = isListed;
+        this.accessIDs = accessIDs;
         this.landlord = landlord;
         this.agent = agent;
-        this.building = building;
+        this.clusterID = clusterID;
         this.description = description;
     }
 }

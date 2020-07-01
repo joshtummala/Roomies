@@ -1,11 +1,6 @@
 package com.roomies.backend.data;
 
-import org.springframework.data.annotation.Id;
-
 public class Description {
-
-    @Id
-    private String id;
 
     private double rent;
     private int capacity;
@@ -17,14 +12,6 @@ public class Description {
         this.capacity = capacity;
         this.location = location;
         this.description = description;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public double getRent() {

@@ -33,10 +33,12 @@ public class ListingController {
     }
 
     @PostMapping
-    public Listing create(@RequestBody Listing listing){ return listingService.save(listing); }
+    public Listing create(@RequestBody Listing listing){ return listingService.createListing(listing); }
 
     @PutMapping("/{id}")
     public Listing update(@RequestBody Listing listing, @PathVariable String id){
+
+
         return listingService.save(listing);
     }
 
