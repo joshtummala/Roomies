@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -53,22 +54,18 @@ public class AuthController {
   @Autowired
   JwtUtils jwtUtils;
 
-  @PostMapping(value = "/signin", consumes = MediaType.TEXT_PLAIN_VALUE)
-  public ResponseEntity<?> authenticateUser(@Valid @RequestBody String stuff) {
-    String username = stuff.split(":")[0];
-    String password = stuff.split(":")[1];
+  @PostMapping(value = "/signin", consumes = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
     Authentication authentication = authenticationManager.authenticate(
-            new UsernamePasswordAuthenticationToken(username, password));
-
+            new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
     SecurityContextHolder.getContext().setAuthentication(authentication);
-    String jwt = jwtUtils.generateJwtToken(authentication);
-
+//    String jwt = jwtUtils.generateJwtToken(authentication);
     UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
     List<String> roles = userDetails.getAuthorities().stream()
             .map(GrantedAuthority::getAuthority)
             .collect(Collectors.toList());
 
-    return ResponseEntity.ok(new JwtResponse(jwt,
+    return ResponseEntity.ok(new JwtResponse("",
             userDetails.getId(),
             userDetails.getUsername(),
             userDetails.getEmail(),
