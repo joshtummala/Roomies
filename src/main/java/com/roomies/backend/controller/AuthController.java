@@ -53,11 +53,12 @@ public class AuthController {
   @Autowired
   JwtUtils jwtUtils;
 
-  @PostMapping(value = "/signin", consumes = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
-
+  @PostMapping(value = "/signin", consumes = MediaType.TEXT_PLAIN_VALUE)
+  public ResponseEntity<?> authenticateUser(@Valid @RequestBody String stuff) {
+    String username = stuff.split(":")[0];
+    String password = stuff.split(":")[1];
     Authentication authentication = authenticationManager.authenticate(
-            new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+            new UsernamePasswordAuthenticationToken(username, password));
 
     SecurityContextHolder.getContext().setAuthentication(authentication);
     String jwt = jwtUtils.generateJwtToken(authentication);
