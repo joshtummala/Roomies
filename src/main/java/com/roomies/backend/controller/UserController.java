@@ -72,7 +72,7 @@ public class UserController {
 
   @DeleteMapping("/{id}")
   @PreAuthorize("(#user.username == authentication.name) or (hasRole('ADMIN'))")
-  public void deleteById(@PathVariable String id) {
+  public void deleteById(@PathVariable String id, @RequestBody @P("user") User user) {
     userService.deleteById(id);
   }
 
