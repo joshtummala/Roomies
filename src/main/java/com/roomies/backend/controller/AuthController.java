@@ -13,6 +13,7 @@ import com.roomies.backend.security.jwt.JwtUtils;
 import com.roomies.backend.security.services.UserDetailsImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -52,7 +53,7 @@ public class AuthController {
   @Autowired
   JwtUtils jwtUtils;
 
-  @PostMapping("/signin")
+  @PostMapping(value = "/signin", consumes = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
     Authentication authentication = authenticationManager.authenticate(
@@ -73,7 +74,7 @@ public class AuthController {
             roles));
   }
 
-  @PostMapping("/signup")
+  @PostMapping(value = "/signup", consumes = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequest signUpRequest) {
     if (userRepository.existsByUsername(signUpRequest.getUsername())) {
       return ResponseEntity
