@@ -37,6 +37,7 @@ public class ClusterController {
 
     @PutMapping("/{id}")
     public Cluster update(@RequestBody Cluster cluster, @PathVariable String id){
+        cluster.setId(id);
         return clusterService.save(cluster);
     }
 

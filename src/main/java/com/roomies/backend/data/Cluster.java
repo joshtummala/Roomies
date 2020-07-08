@@ -3,6 +3,7 @@ package com.roomies.backend.data;
 import org.springframework.data.annotation.Id;
 
 import java.util.Objects;
+import java.util.Set;
 
 public class Cluster {
 
@@ -11,11 +12,20 @@ public class Cluster {
 
     private String name;
     private String description;
+    private Set<String> listings;
 
-    public Cluster(String id, String name, String description) {
-        Id = id;
+    public Cluster(String name, String description, Set<String> listings) {
         this.name = name;
         this.description = description;
+        this.listings = listings;
+    }
+
+    public Set<String> getListings() {
+        return listings;
+    }
+
+    public void setListings(Set<String> listings) {
+        this.listings = listings;
     }
 
     public String getId() {

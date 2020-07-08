@@ -4,6 +4,12 @@ import com.roomies.backend.data.Listing;
 import com.roomies.backend.service.ListingService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PostFilter;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,17 +39,19 @@ public class ListingController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ADMIN', 'ROLE_PRO_USER')")
     public Listing create(@RequestBody Listing listing){ return listingService.createListing(listing); }
 
     @PutMapping("/{id}")
+    @PreAuthorize("#listing.owner.username == authentication.name")
     public Listing update(@RequestBody Listing listing, @PathVariable String id){
-
-
+        listing.setId(id);
         return listingService.save(listing);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteById(@PathVariable String id) {
+    @PreAuthorize("#listing.owner.username == authentication.name")
+    public void deleteById(@PathVariable String id, @RequestBody Listing listing) {
         listingService.deleteById(id);
     }
 }
