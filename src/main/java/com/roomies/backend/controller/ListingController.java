@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -31,6 +32,13 @@ public class ListingController {
     @GetMapping
     public List<Listing> findAll() {
         return listingService.findAll();
+    }
+
+    @GetMapping("/search")
+    public List<Listing> searchBy(
+            @RequestParam(defaultValue = "50", required = false) String num,
+            @RequestParam(defaultValue = "0", required = false) String index) {
+        return this.listingService.searchBy(Integer.parseInt(num), Integer.parseInt(index));
     }
 
     @GetMapping("/{id}")

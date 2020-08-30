@@ -96,4 +96,8 @@ public class ListingService {
         return false;
     }
 
+    public List<Listing> searchBy(int num, int index) {
+        return this.findAll();
+    }
+
 }
