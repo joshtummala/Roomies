@@ -14,7 +14,9 @@ public class ListingService {
 
     @Autowired
     private ListingRepository listingRepository;
-    private ClusterService clusterService = new ClusterService();
+    @Autowired
+    private ClusterService clusterService;
+
 
     public List<Listing> findAll() {
         return listingRepository.findAll();
@@ -53,18 +55,23 @@ public class ListingService {
         return this.save(listing);
     }
 
-    public void updateCluster(String id, Cluster cluster) {
-        if (!this.contains(id)) {
+    public Listing update(Listing listing) {
+        if (!this.contains(listing.getId())) {
             throw new IllegalArgumentException("This listing does not exist");
         }
+        return this.save(listing);
+    }
 
-        Listing listing = this.findById(id);
+    public Listing updateCluster(Listing listing, Cluster cluster) {
+        if (!this.contains(listing.getId())) {
+            throw new IllegalArgumentException("This listing does not exist");
+        }
 
         if (!clusterService.contains(cluster.getId())) {
             throw new IllegalArgumentException("The cluster associated with this listing does not exist");
         }
 
         listing.setClusterID(cluster.getId());
-        this.save(listing);
+        return this.save(listing);
     }
 }

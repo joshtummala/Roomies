@@ -1,5 +1,6 @@
 package com.roomies.backend.controller;
 
+import com.roomies.backend.data.Cluster;
 import com.roomies.backend.data.Listing;
 import com.roomies.backend.service.ListingService;
 
@@ -35,11 +36,14 @@ public class ListingController {
     @PostMapping
     public Listing create(@RequestBody Listing listing){ return listingService.createListing(listing); }
 
+    @PutMapping("/cluster/{id}")
+    public Listing updateCluster(@RequestBody Listing listing, @RequestBody Cluster cluster, @PathVariable String id){
+        return listingService.updateCluster(listing, cluster);
+    }
+
     @PutMapping("/{id}")
     public Listing update(@RequestBody Listing listing, @PathVariable String id){
-
-
-        return listingService.save(listing);
+        return listingService.update(listing);
     }
 
     @DeleteMapping("/{id}")
