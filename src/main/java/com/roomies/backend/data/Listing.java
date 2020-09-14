@@ -1,7 +1,12 @@
 package com.roomies.backend.data;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class Listing {
@@ -11,10 +16,43 @@ public class Listing {
 
     private String name;
     private Group group;
+
+    @DBRef
+    private User owner;
     private boolean isListed;
-    private Set<String> accessIDs;
-    private String clusterID;
+
+    @DBRef
+    private Set<Role> accessRoles = new HashSet<>();
+
+    @DBRef
+    private Cluster cluster;
     private Description description;
+
+    private Map<Integer, List<String>> groupQueue;
+
+    public boolean isListed() {
+        return isListed;
+    }
+
+    public void setListed(boolean listed) {
+        isListed = listed;
+    }
+
+    public Map<Integer, List<String>> getGroupQueue() {
+        return groupQueue;
+    }
+
+    public void setGroupQueue(Map<Integer, List<String>> groupQueue) {
+        this.groupQueue = groupQueue;
+    }
+
+    public User getOwner() {
+        return owner;
+    }
+
+    public void setOwner(User owner) {
+        this.owner = owner;
+    }
 
     public String getId() {
         return id;
@@ -40,20 +78,20 @@ public class Listing {
         this.group = group;
     }
 
-    public boolean isListed() {
+    public boolean getIsListed() {
         return isListed;
     }
 
-    public void setListed(boolean listed) {
+    public void setIsListed(boolean listed) {
         isListed = listed;
     }
 
-    public String getClusterID() {
-        return clusterID;
+    public Cluster getCluster() {
+        return cluster;
     }
 
-    public void setClusterID(String clusterID) {
-        this.clusterID = clusterID;
+    public void setCluster(Cluster cluster) {
+        this.cluster = cluster;
     }
 
     public Description getDescription() {
@@ -64,20 +102,27 @@ public class Listing {
         this.description = description;
     }
 
-    public Set<String> getAccessIDs() {
-        return accessIDs;
+    public Set<Role> getAccessRoles() {
+        return accessRoles;
     }
 
-    public void setAccessIDs(Set<String> accessIDs) {
-        this.accessIDs = accessIDs;
+    public void setAccessRoles(Set<Role> accessRoles) {
+        this.accessRoles = accessRoles;
     }
 
-    public Listing(String name, Group group, boolean isListed, Set<String> accessIDs, String clusterID, Description description) {
+    public Listing() {}
+
+    public Listing(String name, Group group, User owner, boolean isListed, Set<Role> accessRoles,
+                   Cluster cluster, Description description,
+                   Map<Integer, List<String>> groupQueue) {
         this.name = name;
         this.group = group;
+        this.owner = owner;
         this.isListed = isListed;
-        this.accessIDs = accessIDs;
-        this.clusterID = clusterID;
+        this.accessRoles = accessRoles;
+        this.cluster = cluster;
         this.description = description;
+        this.groupQueue = groupQueue;
     }
+
 }

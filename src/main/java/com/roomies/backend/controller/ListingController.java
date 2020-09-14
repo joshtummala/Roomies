@@ -1,10 +1,15 @@
 package com.roomies.backend.controller;
 
-import com.roomies.backend.data.Cluster;
 import com.roomies.backend.data.Listing;
 import com.roomies.backend.service.ListingService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PostFilter;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -28,26 +34,32 @@ public class ListingController {
         return listingService.findAll();
     }
 
+    @GetMapping("/search")
+    public List<Listing> searchBy(
+            @RequestParam(defaultValue = "50", required = false) String num,
+            @RequestParam(defaultValue = "0", required = false) String index) {
+        return this.listingService.searchBy(Integer.parseInt(num), Integer.parseInt(index));
+    }
+
     @GetMapping("/{id}")
     public Listing findById(@PathVariable String id) {
         return listingService.findById(id);
     }
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ADMIN', 'ROLE_PRO_USER')")
     public Listing create(@RequestBody Listing listing){ return listingService.createListing(listing); }
 
-    @PutMapping("/cluster/{id}")
-    public Listing updateCluster(@RequestBody Listing listing, @RequestBody Cluster cluster, @PathVariable String id){
-        return listingService.updateCluster(listing, cluster);
-    }
-
     @PutMapping("/{id}")
+    @PreAuthorize("#listing.owner.username == authentication.name")
     public Listing update(@RequestBody Listing listing, @PathVariable String id){
-        return listingService.update(listing);
+        listing.setId(id);
+        return listingService.save(listing);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteById(@PathVariable String id) {
+    @PreAuthorize("#listing.owner.username == authentication.name")
+    public void deleteById(@PathVariable String id, @RequestBody Listing listing) {
         listingService.deleteById(id);
     }
 }

@@ -32,8 +32,6 @@ import java.util.logging.Logger;
 @RequestMapping("/user")
 public class UserController {
 
-  private final SimpleGrantedAuthority admin = new SimpleGrantedAuthority("ROLE_ADMIN");
-
   @Autowired
   private UserService userService;
 
@@ -72,7 +70,7 @@ public class UserController {
 
   @DeleteMapping("/{id}")
   @PreAuthorize("(#user.username == authentication.name) or (hasRole('ADMIN'))")
-  public void deleteById(@PathVariable String id, @RequestBody @P("user") User user) {
+  public void deleteById(@PathVariable String id, @RequestBody User user) {
     userService.deleteById(id);
   }
 
