@@ -18,7 +18,7 @@ import java.awt.*;
 import java.io.IOException;
 
 @RestController
-@RequestMapping("/photo")
+@RequestMapping("/api/photo")
 public class PhotoController {
 
   @Autowired

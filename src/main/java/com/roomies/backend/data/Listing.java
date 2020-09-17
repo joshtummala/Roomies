@@ -1,6 +1,7 @@
 package com.roomies.backend.data;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
 import java.util.Arrays;
@@ -8,6 +9,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
 
 public class Listing {
 
@@ -27,6 +29,16 @@ public class Listing {
     @DBRef
     private Cluster cluster;
     private Description description;
+
+    public GeoJsonPoint getLocation() {
+        return location;
+    }
+
+    public void setLocation(GeoJsonPoint location) {
+        this.location = location;
+    }
+
+    private GeoJsonPoint location;
 
     private Map<Integer, List<String>> groupQueue;
 

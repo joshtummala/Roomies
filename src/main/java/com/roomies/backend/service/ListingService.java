@@ -1,17 +1,18 @@
 package com.roomies.backend.service;
 
-import com.roomies.backend.data.Cluster;
 import com.roomies.backend.data.Group;
 import com.roomies.backend.data.Listing;
 import com.roomies.backend.repository.ListingRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -27,12 +28,18 @@ public class ListingService {
     private GroupService groupService;
 
     public List<Listing> findAll() {
-        Set<String> userRoles = SecurityContextHolder.getContext()
-                .getAuthentication()
-                .getAuthorities()
+        Set<String> userRoles = this.getUserRoles();
+        return listingRepository.findAll()
                 .stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.toSet());
+                .filter(l -> l.isListed() && l.getAccessRoles().stream()
+                        .anyMatch(x -> !userRoles.contains(x.getName().name())))
+                .collect(Collectors.toList());
+    }
+
+    public List<Listing> findAll(int page, int size) {
+        Set<String> userRoles = this.getUserRoles();
+        Pageable pageable = PageRequest.of(page, size, Sort.by("name"));
+        Page<Listing> listings = listingRepository.findAll(pageable);
         return listingRepository.findAll()
                 .stream()
                 .filter(l -> l.isListed() && l.getAccessRoles().stream()
@@ -41,12 +48,7 @@ public class ListingService {
     }
 
     public Listing findById(String id) {
-        Set<String> userRoles = SecurityContextHolder.getContext()
-                .getAuthentication()
-                .getAuthorities()
-                .stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.toSet());
+        Set<String> userRoles = this.getUserRoles();
         Listing listing = listingRepository.findById(id).orElseThrow(RuntimeException::new);
         if ((!listing.isListed() && listing.getOwner().getUsername().equals(
                 SecurityContextHolder.getContext().getAuthentication().getName())) ||
@@ -89,15 +91,22 @@ public class ListingService {
         Listing listing = this.findById(listingId);
         if (group.size() > listing.getDescription().getCapacity()) {
             throw new IllegalArgumentException("The Group size is too large!");
-        } else if (listing.getGroupQueue().containsKey(
-                listing.getDescription().getCapacity() - group.size())) {
-            return true;
-        }
-        return false;
+        } else return listing.getGroupQueue().containsKey(
+                listing.getDescription().getCapacity() - group.size());
     }
 
     public List<Listing> searchBy(int num, int index) {
         return this.findAll();
+    }
+
+    private Set<String> getUserRoles() {
+        Set<String> userRoles = SecurityContextHolder.getContext()
+                .getAuthentication()
+                .getAuthorities()
+                .stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toSet());
+        return userRoles;
     }
 
 }

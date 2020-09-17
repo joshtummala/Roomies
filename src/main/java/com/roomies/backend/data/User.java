@@ -3,6 +3,7 @@ package com.roomies.backend.data;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
 import java.util.Date;
@@ -19,7 +20,6 @@ public class User {
   private String email;
   @JsonFormat(pattern = "yyyy-MM-dd")
   private Date dob;
-  private Location location;
   private String phone;
 
   @DBRef
@@ -28,12 +28,11 @@ public class User {
   public User() {}
 
   public User(String username, String password, String email,
-              Date dob, Location location, String phone) {
+              Date dob, String phone) {
     this.username = username;
     this.password = password;
     this.email = email;
     this.dob = dob;
-    this.location = location;
     this.phone = phone;
   }
 
@@ -69,10 +68,6 @@ public class User {
     return dob;
   }
 
-  public Location getLocation() {
-    return location;
-  }
-
   public String getEmail() {
     return email;
   }
@@ -91,10 +86,6 @@ public class User {
 
   public void setDob(Date dob) {
     this.dob = dob;
-  }
-
-  public void setLocation(Location location) {
-    this.location = location;
   }
 
   public void setEmail(String email) {

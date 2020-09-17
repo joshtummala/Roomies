@@ -1,8 +1,6 @@
 package com.roomies.backend.payload.request;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.roomies.backend.data.Location;
-import com.roomies.backend.data.Role;
 
 import java.util.Date;
 import java.util.Set;
@@ -14,7 +12,6 @@ public class SignUpRequest {
   private String email;
   @JsonFormat(pattern = "yyyy-MM-dd")
   private Date dob;
-  private Location location;
   private Set<String> roles;
   private String phone;
 
@@ -66,11 +63,4 @@ public class SignUpRequest {
     this.dob = dob;
   }
 
-  public Location getLocation() {
-    return location;
-  }
-
-  public void setLocation(Location location) {
-    this.location = location;
-  }
 }

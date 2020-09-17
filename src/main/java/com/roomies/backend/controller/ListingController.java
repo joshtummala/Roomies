@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/listing")
+@RequestMapping("/api/listing")
 public class ListingController {
 
     @Autowired
@@ -35,10 +35,10 @@ public class ListingController {
     }
 
     @GetMapping("/search")
-    public List<Listing> searchBy(
-            @RequestParam(defaultValue = "50", required = false) String num,
-            @RequestParam(defaultValue = "0", required = false) String index) {
-        return this.listingService.searchBy(Integer.parseInt(num), Integer.parseInt(index));
+    public List<Listing> findAll(
+            @RequestParam(defaultValue = "0", required = false) String page,
+            @RequestParam(defaultValue = "50", required = false) String size) {
+        return this.listingService.findAll(Integer.parseInt(page), Integer.parseInt(size));
     }
 
     @GetMapping("/{id}")
@@ -48,7 +48,9 @@ public class ListingController {
 
     @PostMapping
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ADMIN', 'ROLE_PRO_USER')")
-    public Listing create(@RequestBody Listing listing){ return listingService.createListing(listing); }
+    public Listing create(@RequestBody Listing listing){
+        return listingService.createListing(listing);
+    }
 
     @PutMapping("/{id}")
     @PreAuthorize("#listing.owner.username == authentication.name")

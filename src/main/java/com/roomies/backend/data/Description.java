@@ -4,13 +4,11 @@ public class Description {
 
     private double rent;
     private int capacity;
-    private Location location;
     private String description;
 
-    public Description(double rent, int capacity, Location location, String description) {
+    public Description(double rent, int capacity, String description) {
         this.rent = rent;
         this.capacity = capacity;
-        this.location = location;
         this.description = description;
     }
 
@@ -28,14 +26,6 @@ public class Description {
 
     public void setCapacity(int capacity) {
         this.capacity = capacity;
-    }
-
-    public Location getLocation() {
-        return location;
-    }
-
-    public void setLocation(Location location) {
-        this.location = location;
     }
 
     public String getDescription() {
